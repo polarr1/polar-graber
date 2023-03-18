@@ -1,89 +1,132 @@
 import os
-import base64 
+import sys
+import subprocess
 import argparse
-import codecs
 import random
-import string
-from colorama import Fore
+import time
+import marshal
+import lzma
+import gzip
+import bz2
+import binascii
+import zlib
 
-## (NEW OBFUSCATOR) THIS IS NOT MY CODE I DON'T TAKE ANY CREDIT FOR THIS. I JUST MODIFIED IT TO WORK WITH MY SCRIPTS
-
-class Obfuscator:
-    def __init__(self, code):
-        self.code = code
-        self.__obfuscate()
-    
-    def __xorED(self, text, key = None):
-        newstring = ""
-        if key is None:
-            key = "".join(random.choices(string.digits + string.ascii_letters, k= random.randint(4, 8)))
-        if not key[0] == " ":
-            key = " " + key
-        for i in range(len(text)):
-            newstring += chr(ord(text[i]) ^ ord(key[(len(key) - 2) + 1]))
-        return (newstring, key)
-
-    def __encodestring(self, string):
-        newstring = ''
-        for i in string:
-            if random.choice([True, False]):
-                newstring += '\\x' + codecs.encode(i.encode(), 'hex').decode()
-            else:
-                newstring += '\\' + oct(ord(i))[2:]
-        return newstring
-
-    def __obfuscate(self):
-        xorcod = self.__xorED(self.code)
-        self.code = xorcod[0]
-        encoded_code = base64.b64encode(codecs.encode(codecs.encode(self.code.encode(), 'bz2'), 'uu')).decode()
-        encoded_code = [encoded_code[i:i + int(len(encoded_code) / 4)] for i in range(0, len(encoded_code), int(len(encoded_code) / 4))]
-        new_encoded_code = []
-        new_encoded_code.append(codecs.encode(encoded_code[0].encode(), 'uu').decode() + 'u')
-        new_encoded_code.append(codecs.encode(encoded_code[1], 'rot13') + 'r')
-        new_encoded_code.append(codecs.encode(encoded_code[2].encode(), 'hex').decode() + 'h')
-        new_encoded_code.append(base64.b85encode(codecs.encode(encoded_code[3].encode(), 'hex')).decode() + 'x')
-        self.code = f"""
-_____=eval("{self.__encodestring('eval')}");_______=_____("{self.__encodestring('compile')}");______,____=_____(_______("{self.__encodestring("__import__('base64')")}","",_____.__name__)),_____(_______("{self.__encodestring("__import__('codecs')")}","",_____.__name__));____________________=_____("'{self.__encodestring(xorcod[True])}'");________,_________,__________,___________=_____(_______("{self.__encodestring('exec')}","",_____.__name__)),_____(_______("{self.__encodestring('str.encode')}","",_____.__name__)),_____(_______("{self.__encodestring('isinstance')}","",_____.__name__)),_____(_______("{self.__encodestring('bytes')}","",_____.__name__))
-def ___________________(__________, ___________):
-    __________=__________.decode()
-    _________=""
-    if not ___________[False]=="{self.__encodestring(' ')}":
-        ___________="{self.__encodestring(' ')}"+___________
-    for _ in range(_____("{self.__encodestring('len(__________)')}")):
-        _________+=_____("{self.__encodestring('chr(ord(__________[_])^ord(___________[(len(___________) - True*2) + True]))')}")
-    return (_________,___________)
-def ____________(_____________):
-    if(_____________[-True]!=_____(_______("'{self.__encodestring('c________________6s5________________6ardv8')}'[-True*4]","",_____.__name__))):_____________ = _________(_____________)
-    if not(__________(_____________, ___________)):_____________ = _____(_______("{self.__encodestring('____.decode(_____________[:-True]')},'{self.__encodestring('rot13')}')","",_____.__name__))
+def prett(text):
+    return text.title().center(os.get_terminal_size().columns)
+try:
+    import requests
+    import tqdm
+    import colorama
+    import pyfiglet
+except ModuleNotFoundError:
+    if os.name == 'nt':
+        _ = 'python'
     else:
-        if(_____________[-True]==_____(_______("b'{self.__encodestring('f5sfsdfauf85')}'[-True*4]","", _____.__name__))):
-            _____________=_____(_______("{self.__encodestring('____.decode(_____________[:-True]')},'{self.__encodestring('uu')}')","",_____.__name__))
-        elif (_____________[-True] ==_____(_______("b'{self.__encodestring('d5sfs1dffhsd8')}'[-True*4]","", _____.__name__))):_____________=_____(_______("{self.__encodestring('____.decode(_____________[:-True]')},'{self.__encodestring('hex')}')","",_____.__name__))
-        else:_____________=_____(_______("{self.__encodestring('______.b85decode(_____________[:-True])')}","",_____.__name__));_____________=_____(_______("{self.__encodestring('____.decode(_____________')}, '{self.__encodestring('hex')}')","",_____.__name__))
-        _____________=_____(_______("{self.__encodestring('___________.decode(_____________)')}","",_____.__name__))
-    return _____________
-_________________=_____(_______("{self.__encodestring('___________.decode')}({self.__encodestring(new_encoded_code[True*3]).encode()})","",_____.__name__));________________ = _____(_______("{self.__encodestring('___________.decode')}({self.__encodestring(new_encoded_code[1]).encode()})","",_____.__name__));__________________=_____(_______("{self.__encodestring('___________.decode')}({self.__encodestring(new_encoded_code[True*2]).encode()})","",_____.__name__));______________=_____(_______("{self.__encodestring('___________.decode')}({self.__encodestring(new_encoded_code[False]).encode()})","",_____.__name__));_______________=_____(_______("{self.__encodestring('str.join')}('', {self.__encodestring('[____________(x) for x in [______________,________________,__________________,_________________]]')})","", _____.__name__));________(___________________(____.decode(____.decode(______.b64decode(_________(_______________)), "{self.__encodestring("uu")}"),"{self.__encodestring("bz2")}"),____________________)[_____("{self.__encodestring('False')}")])\nimport asyncio, json, ntpath, os, random, re, shutil, sqlite3, subprocess, threading, winreg, zipfile, httpx, psutil, win32gui, win32con, base64, requests, ctypes, time;from sqlite3 import connect;from base64 import b64decode;from urllib.request import Request, urlopen;from shutil import copy2;from datetime import datetime, timedelta, timezone;from sys import argv;from tempfile import gettempdir, mkdtemp;from json import loads, dumps;from ctypes import windll, wintypes, byref, cdll, Structure, POINTER, c_char, c_buffer;from Crypto.Cipher import AES;from PIL import ImageGrab;from win32crypt import CryptUnprotectData"""
+        _ = 'python' + '.'.join(str(i) for i in sys.version_info[:2])
+    if subprocess.run([_, '-m', 'pip', 'install', '-r', 'requirements.txt']).returncode == 0:
+        exit('\x1b[1m\x1b[92m' + prett('[+] dependencies installed\nrun the program again'))
+    elif subprocess.run(['pip3', 'install', '-r', 'requirements.txt']).returncode == 0:
+        exit('\x1b[1m\x1b[92m' + prett('[+] dependencies installed\nrun the program again'))
+    else:
+        exit('\x1b[1m\x1b[31m' + prett('[!] something error occured while installing dependencies\n maybe pip isn\'t installed or requirements.txt file not available?'))
+BLU = colorama.Style.BRIGHT + colorama.Fore.BLUE
+CYA = colorama.Style.BRIGHT + colorama.Fore.CYAN
+GRE = colorama.Style.BRIGHT + colorama.Fore.GREEN
+YEL = colorama.Style.BRIGHT + colorama.Fore.YELLOW
+RED = colorama.Style.BRIGHT + colorama.Fore.RED
+MAG = colorama.Style.BRIGHT + colorama.Fore.MAGENTA
+LIYEL = colorama.Style.BRIGHT + colorama.Fore.LIGHTYELLOW_EX
+LIRED = colorama.Style.BRIGHT + colorama.Fore.LIGHTRED_EX
+LIMAG = colorama.Style.BRIGHT + colorama.Fore.LIGHTMAGENTA_EX
+LIBLU = colorama.Style.BRIGHT + colorama.Fore.LIGHTBLUE_EX
+LICYA = colorama.Style.BRIGHT + colorama.Fore.LIGHTCYAN_EX
+LIGRE = colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX
+CLEAR = 'cls' if os.name == 'nt' else 'clear'
+COLORS = BLU, CYA, GRE, YEL, RED, MAG, LIYEL, LIRED, LIMAG, LIBLU, LICYA, LIGRE
+FONTS = 'basic', 'o8', 'cosmic', 'graffiti', 'chunky', 'epic', 'poison', 'doom', 'avatar'
+PYTHON_VERSION = 'python' + '.'.join(str(i) for i in sys.version_info[:2])
+colorama.init(autoreset=True)
+
+def encode(source:str) -> str:
+    selected_mode = random.choice((lzma, gzip, bz2, binascii, zlib))
+    marshal_encoded = marshal.dumps(compile(source, 'Py-Fuscate', 'exec'))
+    if selected_mode is binascii:
+        encoded = binascii.b2a_base64(marshal_encoded)
+    else:
+        encoded = selected_mode.compress(marshal_encoded)
+    if selected_mode is binascii:
+        TMP = 'import marshal,lzma,gzip,bz2,binascii,zlib;exec(marshal.loads(binascii.a2b_base64({})))'
+        return TMP.format(encoded)
+    else:
+        TMP = 'import marshal,lzma,gzip,bz2,binascii,zlib;exec(marshal.loads({}.decompress({})))'
+        return TMP.format(selected_mode.__name__, encoded)
+
+def logo() -> None:
+    os.system(CLEAR)
+    font = random.choice(FONTS)
+    color1 = random.choice(COLORS)
+    color2 = random.choice(COLORS)
+    while color1 == color2:
+        color2 = random.choice(COLORS)
+    print(color1 + '_' * os.get_terminal_size().columns, end='\n'*2)
+    print(color2 + pyfiglet.figlet_format(
+        'KSCH\nBlackCap',
+        font=font,
+        justify='center',
+        width=os.get_terminal_size().columns),
+        end=''
+        )
+    print(color1 + '_' * os.get_terminal_size().columns, end='\n'*2)
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='obfuscate python programs'.title())
+    parser._optionals.title = "syntax".title()
+    parser.add_argument(
+        '-r','--recursion',
+        default=False,
+        required=False,
+        help="recursion encoding by using this flag you will get x2 obfuscation strength".title(),
+        dest='r',
+        action='store_true')
+    parser.add_argument('-i', '--input', type=str, help='input file name'.title(), required=True)
+    parser.add_argument('-o', '--output', type=str, help='output file name'.title(), required=True)
+    parser.add_argument('-s', '--strength', type=int,
+                        help='strengthness of obfuscation. 100 recomended'.title(), required=True)
+    if len(sys.argv)==1:
+        parser.print_help()
+        exit()
+    return parser.parse_args()
+
+
+
+
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('FILE', help='the target file', metavar= 'SOURCE')
-    parser.add_argument('-o', metavar='path', help='custom output file path')
-    args = parser.parse_args()
-    if args.o is None:
-        args.o = f'obfuscated_{os.path.basename(args.FILE)}'
-    if not os.path.isfile(args.FILE):
-        print(f'File "{os.path.basename(args.FILE)}" is not found')
-        exit()
-    elif not 'py' in os.path.basename(args.FILE).split('.')[-1]:
-        print(f'''File "{os.path.basename(args.FILE)}" is not a '.py' file''')
-        exit()
-    with open(args.FILE, encoding='utf-8') as file:
-        CODE = file.read()
-    obfuscator = Obfuscator(CODE)
-    with open(args.o, 'w', encoding='utf-8') as output_file:
-        output_file.write(obfuscator.code)
-    print(f'{Fore.MAGENTA}[{Fore.RESET}{Fore.WHITE}+{Fore.RESET}{Fore.MAGENTA}]{Fore.RESET}{Fore.WHITE} Code obfuscated!{Fore.RESET}')
-
+    args = parse_args()
+    print(random.choice(COLORS) + '\t[+] encoding '.title() + args.input)
+    if not(args.r):
+        print(random.choice(COLORS) + '\t[!] you haven\'t selected the recursion mode'.title())
+    with tqdm.tqdm(total=args.strength) as pbar:
+        with open(args.input) as input:
+            if args.r:
+                for i in range(args.strength):
+                    if i == 0:
+                        encoded = encode(source=input.read())
+                    else:
+                        encoded = encode(source=encode(source=encoded))
+                    time.sleep(0.1)
+                    pbar.update(1)
+            else:
+                for i in range(args.strength):
+                    if i == 0:
+                        encoded = encode(source=input.read())
+                    else:
+                        encoded = encode(source=encoded)
+                    time.sleep(0.1)
+                    pbar.update(1)
+    with open(args.output, 'w') as output:
+        output.write(f"import asyncio, json, ntpath, os, random, re, shutil, sqlite3, subprocess, threading, winreg, zipfile, httpx, psutil, win32gui, win32con, pyperclip, base64, requests, ctypes, time;from sqlite3 import connect;from base64 import b64decode;from urllib.request import Request, urlopen;from shutil import copy2;from datetime import datetime, timedelta, timezone;from sys import argv;from tempfile import gettempdir, mkdtemp;from json import loads, dumps;from ctypes import windll, wintypes, byref, cdll, Structure, POINTER, c_char, c_buffer;from Crypto.Cipher import AES;from PIL import ImageGrab;from win32crypt import CryptUnprotectData\n\ntry:\n\t{encoded}\nexcept KeyboardInterrupt:\n\tpass")
+    print(LIGRE + '\t[+] encoding successful!\n\tsaved as '.title() + args.output)
 if __name__ == '__main__':
+    logo()
     main()
-    
