@@ -115,7 +115,7 @@ class Builder:
             self.startup = "no"
 
         
-        self.hider = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Hide BlackCap console for victim? (yes/no): ')
+        self.hider = input(f'{Fore.GREEN}[{Fore.RESET}+{Fore.GREEN}]{Fore.RESET} Hide ZazaGrab console for victim? (yes/no): ')
         if self.hider.lower() == 'yes' or self.hider.lower() == 'y':
             self.hider = "yes"
         else:
